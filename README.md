@@ -1,7 +1,7 @@
 # Crawn image
 ## Set up
 ```cmd
-  python  install request
+  python  install requests
 ```
 ## Run
 ```cmd
