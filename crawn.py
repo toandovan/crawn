@@ -12,7 +12,7 @@ def zoom(layer, URL, data):
     except FileExistsError:
         pass
     pool = multiprocessing.Pool(64)
-    processes=[pool.apply_async(x_function, args=(layer, URL, data, x)) for x in range(data['xmin'],data['xmax'])]
+    processes=[pool.apply_async(x_function, args=(layer, URL, data, x)) for x in range(data['xmin'],data['xmax']+1)]
     result = [p.get() for p in processes]
 
 def x_function(layer, URL, data, x ):
@@ -20,7 +20,7 @@ def x_function(layer, URL, data, x ):
         os.mkdir("./"+str(layer['name'])+"/"+str(data["z"])+"/"+str(x))
     except FileExistsError:
         pass
-    for y in range(data['ymin'],data['ymax']):
+    for y in range(data['ymin'],data['ymax']+1):
         y_function(layer, URL, data, x, y)
 
 def y_function(layer, URL, data, x, y):
