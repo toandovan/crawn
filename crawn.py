@@ -2,7 +2,7 @@ import requests
 import json
 import os
 import multiprocessing
-from multiprocessing import Pool
+from multiprocessing import Pool, freeze_support
 import shutil
 f = open('data.json')
 data = json.load(f)
@@ -29,11 +29,13 @@ def y_function(layer, URL, data, x, y):
     if len(response.content)!=0:
         open("./"+str(layer['name'])+"/"+str(data['z'])+"/"+str(x)+"/"+str(y)+".png", "wb").write(response.content)
 
-for layer in data['layer']:
-    URL = layer['URL']
-    try:
-        os.mkdir(str(layer['name']))
-    except FileExistsError:
-        pass
-    for i in data['data']:
-        multiprocessing.Process(target=zoom, args=(layer,URL,i)).start()
+if __name__ == '__main__':
+    freeze_support()
+    for layer in data['layer']:
+        URL = layer['URL']
+        try:
+            os.mkdir(str(layer['name']))
+        except FileExistsError:
+            pass
+        for i in data['data']:
+            multiprocessing.Process(target=zoom, args=(layer,URL,i)).start()
